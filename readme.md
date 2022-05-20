@@ -107,7 +107,9 @@ In addition to the terminal output, logs are also written to the file
 
 ```json5
 // File (default log.txt)
-{"level":"info","ts":"Sun, 01 May 2022 14:54:38 EEST","msg":"Initializing database"}
+{"level":"info","ts":"Fri, 20 May 2022 10:23:52 EEST","msg":"Initializing repository"}
+{"level":"info","ts":"Fri, 20 May 2022 10:23:52 EEST","msg":"Done","time":0.015016048}
+{"level":"info","ts":"Fri, 20 May 2022 10:23:52 EEST","msg":"Server started at 0.0.0.0:8080"}
 ```
 ---
 
