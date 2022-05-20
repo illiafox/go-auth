@@ -1,0 +1,5 @@
+.idea
+
+cmd/server/log.txt
+cmd/server/*.toml
+!cmd/server/config.toml

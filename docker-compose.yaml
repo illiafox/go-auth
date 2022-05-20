@@ -1,0 +1,84 @@
+version: '3.3'
+
+services:
+
+  postgres:
+    restart: on-failure
+    image: 'postgres:latest'
+    container_name: 'postgres'
+
+    volumes:
+      - "./migrate/*.up.sql:/docker-entrypoint-initdb.d/"
+
+    networks:
+      - hosts
+
+    environment:
+      POSTGRES_DB: auth_example
+      POSTGRES_USER: server
+      POSTGRES_PASSWORD: pg_password
+
+  #
+
+  memcached:
+    restart: on-failure
+
+    image: memcached
+
+    container_name: 'memcached'
+
+    networks:
+      - hosts
+
+  #
+
+  redis:
+    restart: on-failure
+
+    container_name: 'redis'
+
+    image: "redis:latest"
+
+    command: redis-server --requirepass redis_password
+
+    environment:
+      REDIS_REPLICATION_MODE: master
+
+    networks:
+      - hosts
+
+  #
+
+  server:
+    restart: on-failure
+
+    build: .
+
+    container_name: 'server'
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgres
+      - redis
+      - memcached
+
+    environment:
+      POSTGRES_IP: postgres
+      POSTGRES_USER: server
+      POSTGRES_PASSWORD: pg_password
+
+      REDIS_ADDRESS: 'redis:6379'
+      REDIS_PASS: 'redis_password'
+
+      MEMCACHED_ADDRESS: 'memcached:11211'
+
+      ARGS: -env -http
+
+    networks:
+      - hosts
+
+networks:
+  hosts:
+    driver: "bridge"

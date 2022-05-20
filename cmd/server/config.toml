@@ -1,0 +1,37 @@
+[Postgres]
+User = "pg_user"
+Pass = "pg_password"
+DBName = "auth_example"
+IP = "127.0.0.1"
+Port = "5432"
+Protocol = "tcp"
+
+[Redis]
+Address = "127.0.0.1:6379"
+Pass = "redis_password"
+DB = 0
+
+[Memcached]
+Address = "127.0.0.1:11211"
+
+[Oauth]
+GitPath = "oauth/github_secret.json"
+GooglePath = "oauth/google_secret.json"
+
+[Host]
+Port = "8080"
+Key = "cert/localhost.key"
+Cert = "cert/localhost.crt"
+Templates = "../../web/templates/"
+Static = "../../web/static/"
+
+[Cookie]
+Key="A48316A4E134E453D713815F152C0147A3CB8686422DBDB812F2C79C24DB2D53"
+Name="credentials"
+Part="sessions"
+
+[SMTP]
+Mail = "fortstudio8@gmail.com"
+Password = "MyVerySecretPassword" # generate 16-length password
+Hostname = "smtp.gmail.com"
+Port = 587

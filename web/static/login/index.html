@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+
+<script type="text/javascript" src="/js/pass.js"></script>
+<script type="application/javascript" src="check.js"></script>
+
+<style>
+    img {
+        padding: 0 20px;
+    }
+</style>
+
+<body style="background-color: black;color: white">
+
+<div class="center">
+
+
+    <div style="text-align: center">
+        <h1 style="font-family: 'Josefin Sans', sans-serif; font-size: 60px; margin-bottom: 0">Fort Studio</h1>
+
+        <div id="auth" style="display: none">
+            <form id="auth_form" method="post" action="/login/">
+                <input name="mail" class="input" type="email" placeholder="Mail" required><br>
+                <h3 class="warn" id="mail-check"></h3>
+
+
+                <input style="margin-top: 5px" name="password" class="input" type="password" id="pass_input"
+                       placeholder="Password" required>
+                <h3 class="warn" id="pass-check"></h3>
+
+                <p style="font-size: 120%; margin-top: 0">
+                    <input type="checkbox" id="show" onclick="ShowHidePass('pass_input','show')"
+                           style="font-family: Inconsolata,monospace; margin-top: 10px;">
+                    Show password
+                </p>
+            </form>
+        </div>
+
+        <div style="display: inline-block; margin-top: 20px">
+            <a id="github-logo" href="/oauth/github/login"><img src="/images/github.png" height="64" width="64"
+                                                                alt="github"></a>
+
+            <img style="filter: invert(1);" src="/images/mail.svg" height="64" width="64" alt="github"
+                 onclick="displayAuth('auth')">
+
+
+            <a id="google-logo" href="/oauth/google/login">
+                <img style="filter: invert(1);" src="/images/google.svg" height="64" width="64" alt="google">
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

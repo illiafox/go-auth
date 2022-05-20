@@ -1,0 +1,60 @@
+
+.center {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+button {
+    cursor: pointer;
+    font-size: 30px;
+    touch-action: manipulation;
+    background: black;
+    color: white;
+    font-family: 'Inconsolata', monospace;
+    border: 2px solid white;
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 500ms;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+img {
+    transition: 500ms;
+}
+
+img:hover {
+    transform: scale(1.1) rotate(20deg);
+}
+
+
+.input {
+    /*display: inline-block;*/
+    /*padding: 10px 15px;*/
+    font-size: 20px;
+    border: 2px solid white;
+    /*background-color: rgb(228, 228, 228);*/
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+}
+
+p {
+    font-family: Inconsolata, monospace;
+}
+
+.warn {
+    display: none;
+    font-family: Inconsolata, monospace;
+    font-weight: bold;
+    color: lightcoral;
+    margin-top: 5px;
+    margin-bottom: 0;
+    /*display: none;*/
+}

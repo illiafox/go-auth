@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-weight: lighter;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    a {
+        text-decoration: none;
+        color: lightcoral;
+    }
+</style>
+
+<body>
+
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <h1>
+        Hi, {{ .Mail }}</h1>
+    <h2>
+        Authentication type: <span style="color: lightcoral"> {{ .Auth }} </span></h2>
+    <a style="color: cornflowerblue ;font-size: 30px; font-weight: lighter;font-family: 'Inconsolata', sans-serif;"
+       href="/logout">Logout</a>
+
+</div>
+
+</body>
+</html>
