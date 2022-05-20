@@ -1,6 +1,9 @@
 # Github / Mail / Google auth example with Postgresql, Redis and Memcached
+![image](https://user-images.githubusercontent.com/61962654/169509440-485a95f0-e2de-4d79-b7a6-bf953536c634.png)
 ![image](https://user-images.githubusercontent.com/61962654/169366937-a5472d37-2c9f-463e-8193-64824b3938b6.png)
 ![image](https://user-images.githubusercontent.com/61962654/169367192-9967579b-b7c9-47d8-bf88-434ddd48e190.png)
+
+
 
 ## Requirements
 
