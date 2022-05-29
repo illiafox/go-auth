@@ -34,6 +34,15 @@
 5. Enter the `URIs` that are allowed to be redirect-URIs (e.g. `https://localhost:8080/oauth/google/callback`)
 6. Paste both `Client ID` and `Client Secret` to the `google_secret.json`
 
+### - Mail `SMTP`
+1. Go to the **[Gmail Settings](https://gmail.com)**
+2. Enable `IMAP` in the **[Forwarding](https://mail.google.com/mail/u/0/#settings/fwdandpop)** 
+3. Enable **[Less secure apps Access](https://myaccount.google.com/lesssecureapps)** `OPTIONAL`
+4. Generate  **[App Password](https://support.google.com/accounts/answer/185833?hl=en)** for mail access `FROM May 30, 2022`
+5. Paste `mail` and `password` to the config
+
+
+
 ---
 
 ## docker-compose
