@@ -39,10 +39,22 @@ func (m Mail) Store(key, mail string, secret []byte) error {
 
 	encoder := base64.NewEncoder(base64.StdEncoding, buf)
 
-	encoder.Write([]byte(mail))
+	_, err := encoder.Write([]byte(mail))
+	if err != nil {
+		return fmt.Errorf("encode mail: %w", err)
+	}
+
 	buf.Write(separator)
-	encoder.Write(secret)
-	encoder.Close()
+
+	_, err = encoder.Write(secret)
+	if err != nil {
+		return fmt.Errorf("encode secret: %w", err)
+	}
+
+	err = encoder.Close()
+	if err != nil {
+		return fmt.Errorf("close encoder: %w", err)
+	}
 
 	return m.client.Set(&memcache.Item{
 		Key:        prefix + key,
@@ -81,14 +93,14 @@ func (m Mail) Get(key string) (mail, secret string, err error) {
 	buf := item.Value[:i]
 	_, err = base64.StdEncoding.Decode(buf, buf)
 	if err != nil {
-		return "", "", fmt.Errorf("base64: decode: %w", err)
+		return "", "", fmt.Errorf("base64: decode first part: %w", err)
 	}
 	mail = string(buf[:base64.StdEncoding.DecodedLen(len(buf))])
 	//
 	buf = item.Value[i+1:]
 	_, err = base64.StdEncoding.Decode(buf, buf)
 	if err != nil {
-		return "", "", fmt.Errorf("base64: decode: %w", err)
+		return "", "", fmt.Errorf("base64: decode second part: %w", err)
 	}
 	secret = string(buf[:base64.StdEncoding.DecodedLen(len(buf))])
 	//

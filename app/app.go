@@ -9,13 +9,13 @@ import (
 	"syscall"
 	"time"
 
-	"auth-example/cookie"
-	"auth-example/database"
-	"auth-example/mail"
-	"auth-example/oauth"
-	"auth-example/server"
-	"auth-example/server/repository"
-	"auth-example/utils/templates"
+	"go-auth/cookie"
+	"go-auth/database"
+	"go-auth/mail"
+	"go-auth/oauth"
+	"go-auth/server"
+	"go-auth/server/repository"
+	"go-auth/utils/templates"
 	"go.uber.org/zap"
 )
 
@@ -148,7 +148,7 @@ func Start() {
 	signal.Notify(ch, os.Interrupt, syscall.SIGQUIT, syscall.SIGTERM)
 
 	<-ch
-	os.Stdout.WriteString("\n")
+	_, _ = os.Stdout.WriteString("\n")
 
 	//
 

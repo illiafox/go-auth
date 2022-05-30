@@ -3,7 +3,7 @@ package mail
 import (
 	"fmt"
 
-	"auth-example/utils/config"
+	"go-auth/utils/config"
 	"gopkg.in/gomail.v2"
 )
 

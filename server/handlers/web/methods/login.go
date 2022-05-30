@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"net/http"
 
-	"auth-example/database/model"
-	"auth-example/server/handlers/web/validator"
 	"github.com/google/uuid"
+	"go-auth/database/model"
+	"go-auth/server/handlers/web/validator"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )

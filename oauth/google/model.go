@@ -9,11 +9,7 @@ import (
 type Auth struct {
 	authURL  string
 	getToken string
-	keyFunc  jwt.Keyfunc
-}
-
-func (a Auth) Keyfunc(token *jwt.Token) (interface{}, error) {
-	return a.keyFunc(token)
+	Keys     jwt.Keyfunc
 }
 
 func (a Auth) Auth(state string) string {
@@ -22,4 +18,8 @@ func (a Auth) Auth(state string) string {
 
 func (a Auth) Token(code string) string {
 	return a.getToken + url.QueryEscape(code)
+}
+
+func (a Auth) KeyFunc() jwt.Keyfunc {
+	return a.Keys
 }

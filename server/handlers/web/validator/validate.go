@@ -1,16 +1,21 @@
 package validator
 
 import (
+	"fmt"
 	"net/http"
 	"net/mail"
 
-	"auth-example/server/handlers/web/validator/pass"
-	"auth-example/utils/templates"
+	"go-auth/server/handlers/web/validator/pass"
+	"go-auth/utils/templates"
 )
 
 func Validate(w http.ResponseWriter, r *http.Request, ts *templates.Templates) (email, password string, passed bool) {
 
-	r.ParseForm()
+	err := r.ParseForm()
+	if err != nil {
+		ts.Message.Execute(w, fmt.Sprintf("parse form: %s", err))
+
+	}
 
 	email = r.Form.Get("mail")
 	if email == "" {
@@ -26,9 +31,9 @@ func Validate(w http.ResponseWriter, r *http.Request, ts *templates.Templates) (
 		return
 	}
 
-	_, err := mail.ParseAddress(email)
+	_, err = mail.ParseAddress(email)
 	if err != nil {
-		ts.Message.Execute(w, "wrong mail format: "+err.Error())
+		ts.Message.Execute(w, fmt.Sprintf("wrong mail format: %s", err))
 
 		return
 	}

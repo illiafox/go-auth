@@ -3,10 +3,10 @@ package memcached
 import (
 	"fmt"
 
-	"auth-example/database/memcached/mail"
-	"auth-example/database/memcached/state"
-	"auth-example/utils/config"
 	"github.com/bradfitz/gomemcache/memcache"
+	"go-auth/database/memcached/mail"
+	"go-auth/database/memcached/state"
+	"go-auth/utils/config"
 )
 
 type Memcached struct {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"auth-example/server/repository"
-	"auth-example/utils/templates"
+	"go-auth/server/repository"
+	"go-auth/utils/templates"
 	"go.uber.org/zap"
 )
 
@@ -70,7 +70,17 @@ func (m Methods) Main(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	m.ts.Main.Any(w, struct {
+	err = m.ts.Main.Any(w, struct {
 		Mail, Auth string
-	}{mail, string(auth)})
+	}{
+		Mail: mail,
+		Auth: string(auth),
+	})
+
+	if err != nil {
+		m.log.Error("main: execute template", zap.Error(err), zap.String("mail", mail))
+		m.ts.Message.Internal(w)
+
+		return
+	}
 }

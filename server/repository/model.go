@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"auth-example/utils/config"
-	"auth-example/utils/templates"
+	"go-auth/utils/config"
+	"go-auth/utils/templates"
 	"go.uber.org/zap"
 )
 

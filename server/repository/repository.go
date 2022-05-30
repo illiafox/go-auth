@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"auth-example/database/model"
 	"github.com/golang-jwt/jwt/v4"
+	"go-auth/database/model"
 )
 
 type Repository struct {
@@ -77,5 +77,5 @@ type Github interface {
 
 type Google interface {
 	Github
-	Keyfunc(*jwt.Token) (interface{}, error)
+	KeyFunc() jwt.Keyfunc
 }

@@ -4,13 +4,15 @@ import (
 	"net/http"
 	"path"
 
-	"auth-example/server/handlers/web/methods"
-	"auth-example/server/repository"
 	"github.com/gorilla/mux"
+	"go-auth/server/handlers/web/methods"
+	"go-auth/server/repository"
 )
 
 func New(model repository.Model) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
+
+	model.Log = model.Log.Named("web")
 
 	static := http.FileServer(http.Dir(path.Dir(model.Config.Static)))
 

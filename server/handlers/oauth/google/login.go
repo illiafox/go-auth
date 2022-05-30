@@ -14,7 +14,7 @@ func (m Methods) Login(w http.ResponseWriter, r *http.Request) {
 	if err == nil && session != "" {
 		err = m.rep.Redis.Session.Delete(session)
 		if err != nil {
-			m.log.Error("oauth: google: redis: delete session", zap.Error(err), zap.String("token", session))
+			m.log.Error("redis: delete session", zap.Error(err), zap.String("token", session))
 			m.ts.Message.Internal(w)
 
 			return
@@ -27,7 +27,7 @@ func (m Methods) Login(w http.ResponseWriter, r *http.Request) {
 
 	err = m.rep.Memcached.State.Store(state)
 	if err != nil {
-		m.log.Error("oauth: google: memcached: store state", zap.Error(err), zap.String("state", state))
+		m.log.Error("memcached: store state", zap.Error(err), zap.String("state", state))
 		m.ts.Message.Internal(w)
 
 		return

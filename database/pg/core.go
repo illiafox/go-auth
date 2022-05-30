@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"auth-example/database/pg/user"
-	"auth-example/utils/config"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"go-auth/database/pg/user"
+	"go-auth/utils/config"
 )
 
 type Postgres struct {

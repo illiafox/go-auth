@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"auth-example/oauth/parse"
+	"go-auth/oauth/parse"
 )
 
 func New(web *parse.Web) (*Auth, error) {

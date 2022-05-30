@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"auth-example/database/model"
 	"github.com/google/uuid"
+	"go-auth/database/model"
 	"go.uber.org/zap"
 )
 
@@ -34,7 +34,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 	// find state in cache
 	exist, err := m.rep.Memcached.State.Lookup(state)
 	if err != nil { // only internal
-		m.log.Error("oauth: github: memcached: lookup state",
+		m.log.Error("memcached: lookup state",
 			zap.Error(err),
 			zap.String("state", state),
 		)
@@ -61,7 +61,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 		desc := query.Get("error_description")
 		uri := query.Get("error_uri")
 
-		m.log.Warn("oauth: github: error inside query",
+		m.log.Warn("error inside query",
 			zap.String("error", problem),
 			zap.String("description", desc),
 			zap.String("url", uri),
@@ -86,7 +86,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := client.Get(m.rep.Oauth.Github.Token(code))
 	if err != nil {
-		m.log.Error("oauth: github: get token request", zap.Error(err))
+		m.log.Error("get token request", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -96,7 +96,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 	data := new(strings.Builder)
 	_, err = io.Copy(data, resp.Body)
 	if err != nil {
-		m.log.Error("oauth: github: read body", zap.Error(err))
+		m.log.Error("read body", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -104,7 +104,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	values, err := url.ParseQuery(data.String())
 	if err != nil {
-		m.log.Error("oauth: github: parse query",
+		m.log.Error("parse query",
 			zap.Error(err),
 			zap.String("query", data.String()),
 		)
@@ -115,7 +115,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	token := values.Get("access_token")
 	if token == "" {
-		m.log.Error("oauth: github: token",
+		m.log.Error("token",
 			zap.String("error", values.Get("error_description")),
 			zap.String("query", data.String()),
 		)
@@ -128,7 +128,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 	request, err := http.NewRequest("GET", "https://api.github.com/user/emails", nil)
 
 	if err != nil {
-		m.log.Error("oauth: github: new user data request", zap.Error(err))
+		m.log.Error("new user data request", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -138,7 +138,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	resp, err = client.Do(request)
 	if err != nil {
-		m.log.Error("oauth: github: do user data request", zap.Error(err))
+		m.log.Error("do user data request", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -154,7 +154,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	err = json.NewDecoder(resp.Body).Decode(&mails)
 	if err != nil {
-		m.log.Error("oauth: github: user data: decode", zap.Error(err))
+		m.log.Error("user data: decode", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -177,7 +177,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	id, auth, err := m.rep.Postgres.User.GetByMail(ctx, mail)
 	if err != nil {
-		m.log.Error("oauth: github: postgresql: get user",
+		m.log.Error("postgresql: get user",
 			zap.Error(err),
 			zap.String("mail", mail),
 		)
@@ -190,7 +190,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 		id, err = m.rep.Postgres.User.NewID(ctx, model.Github, mail, token)
 		if err != nil {
-			m.log.Error("oauth: github: postgresql: new user",
+			m.log.Error("postgresql: new user",
 				zap.Error(err),
 				zap.String("mail", mail),
 			)
@@ -209,7 +209,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	err = m.rep.Redis.Session.New(key, id)
 	if err != nil {
-		m.log.Error("oauth: github: redis: new session",
+		m.log.Error("redis: new session",
 			zap.Error(err),
 			zap.String("key", key),
 			zap.Int64("id", id),

@@ -36,10 +36,10 @@
 
 ### - Mail `SMTP`
 1. Go to the **[Gmail Settings](https://gmail.com)**
-2. Enable `IMAP` in the **[Forwarding](https://mail.google.com/mail/u/0/#settings/fwdandpop)** 
+2. Enable `IMAP` in the **[Forwarding IMAP/POP](https://mail.google.com/mail/u/0/#settings/fwdandpop)** 
 3. Enable **[Less secure apps Access](https://myaccount.google.com/lesssecureapps)** `OPTIONAL`
-4. Generate  **[App Password](https://support.google.com/accounts/answer/185833?hl=en)** for mail access `FROM May 30, 2022`
-5. Paste `mail` and `password` to the config
+4. Generate an **[App Password](https://support.google.com/accounts/answer/185833?hl=en)** for mail access `FROM May 30, 2022`
+5. Paste the `mail` and the `password` to the config
 
 
 
@@ -124,16 +124,16 @@ In addition to the terminal output, logs are also written to the file
 
 ## Endpoints
 
-### `/` Main Page
+### - Main Page `/`
 
-### `/register` Register
+### - Register  `/register`
 
-### `/login` Login
+### - Login `/login`
 
-### `/logout` Logout
+### - Logout `/logout`
 
-### `/verify` Mail verify
+### - Mail verify `/verify`
 
-#### `/oauth/github/login`  `/oauth/github/callback` Github OAuth
+#### - Github OAuth `/oauth/github/login`  `/oauth/github/callback` 
 
-#### `/oauth/google/login`  `/oauth/google/callback` Google OAuth
+#### - Google OAuth `/oauth/google/login`  `/oauth/google/callback` 

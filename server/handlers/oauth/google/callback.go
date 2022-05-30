@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"auth-example/database/model"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
+	"go-auth/database/model"
 	"go.uber.org/zap"
 )
 
@@ -30,12 +30,10 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
-
 	// find state in cache
 	exist, err := m.rep.Memcached.State.Lookup(state)
 	if err != nil { // only internal
-		m.log.Error("oauth: google: memcached: lookup state",
+		m.log.Error("memcached: lookup state",
 			zap.Error(err),
 			zap.String("state", state),
 		)
@@ -53,7 +51,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 	// //
 
 	if problem := query.Get("error"); problem != "" {
-		m.log.Warn("oauth: google: error inside query",
+		m.log.Warn("error inside query",
 			zap.String("error", problem),
 		)
 
@@ -76,7 +74,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := client.Post(m.rep.Oauth.Google.Token(code), "", nil)
 	if err != nil {
-		m.log.Error("oauth: google: get token request", zap.Error(err))
+		m.log.Error("get token request", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
@@ -90,22 +88,22 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	err = json.NewDecoder(resp.Body).Decode(&data)
 	if err != nil {
-		m.log.Error("oauth: google: decode json token request", zap.Error(err))
+		m.log.Error("decode json token request", zap.Error(err))
 		m.ts.Message.Internal(w)
 
 		return
 	}
 
 	if data.JWT == "" || data.AccessToken == "" {
-		m.log.Warn("oauth: google: data fields are empty")
+		m.log.Warn("data fields are empty")
 		m.ts.Message.Execute(w, TryAgain)
 
 		return
 	}
 
-	token, err := jwt.Parse(data.JWT, m.rep.Oauth.Google.Keyfunc)
+	token, err := jwt.Parse(data.JWT, m.rep.Oauth.Google.KeyFunc())
 	if err != nil {
-		m.log.Warn("oauth: google: jwt parse", zap.Error(err))
+		m.log.Warn("jwt parse", zap.Error(err))
 		m.ts.Message.Execute(w, TryAgain)
 
 		return
@@ -113,7 +111,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		m.log.Warn("oauth: google: cast to MapClaims")
+		m.log.Warn("cast to MapClaims")
 		m.ts.Message.Execute(w, TryAgain)
 
 		return
@@ -121,14 +119,14 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	verified, ok := claims["email_verified"].(bool)
 	if !ok {
-		m.log.Warn("oauth: google: cast to 'email_verified'")
+		m.log.Warn("cast to 'email_verified'")
 		m.ts.Message.Execute(w, TryAgain)
 
 		return
 	}
 	mail, ok := claims["email"].(string)
 	if !ok {
-		m.log.Warn("oauth: google: cast to 'email'")
+		m.log.Warn("cast to 'email'")
 		m.ts.Message.Execute(w, TryAgain)
 
 		return
@@ -144,7 +142,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	id, auth, err := m.rep.Postgres.User.GetByMail(ctx, mail)
 	if err != nil {
-		m.log.Error("oauth: google: postgresql: get user",
+		m.log.Error("postgresql: get user",
 			zap.Error(err),
 			zap.String("mail", mail),
 		)
@@ -157,7 +155,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 		id, err = m.rep.Postgres.User.NewID(ctx, model.Google, mail, data.AccessToken)
 		if err != nil {
-			m.log.Error("oauth: google: postgresql: new user",
+			m.log.Error("postgresql: new user",
 				zap.Error(err),
 				zap.String("mail", mail),
 			)
@@ -176,7 +174,7 @@ func (m Methods) Callback(w http.ResponseWriter, r *http.Request) {
 
 	err = m.rep.Redis.Session.New(key, id)
 	if err != nil {
-		m.log.Error("oauth: google: redis: new session",
+		m.log.Error("redis: new session",
 			zap.Error(err),
 			zap.String("key", key),
 			zap.Int64("id", id),

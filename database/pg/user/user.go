@@ -3,9 +3,9 @@ package user
 import (
 	"context"
 
-	"auth-example/database/model"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"go-auth/database/model"
 )
 
 type User struct {
@@ -53,7 +53,7 @@ func (u User) Exists(ctx context.Context, mail string) (exists bool, err error) 
 	return
 }
 
-func (u User) GetSecretByMail(ctx context.Context, mail string)(id int64,
+func (u User) GetSecretByMail(ctx context.Context, mail string) (id int64,
 	secret []byte, auth model.AuthType, err error) {
 
 	err = u.client.QueryRow(ctx, "SELECT user_id,secret,secret_type FROM users WHERE mail = $1", mail).

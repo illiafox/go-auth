@@ -3,8 +3,8 @@ package cookie
 import (
 	"net/http"
 
-	"auth-example/utils/config"
 	"github.com/gorilla/sessions"
+	"go-auth/utils/config"
 )
 
 func New(conf config.Cookie) Cookie {

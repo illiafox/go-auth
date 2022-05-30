@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"auth-example/database/memcached"
-	"auth-example/database/pg"
-	"auth-example/database/redis"
-	"auth-example/utils/config"
+	"go-auth/database/memcached"
+	"go-auth/database/pg"
+	"go-auth/database/redis"
+	"go-auth/utils/config"
 	"go.uber.org/zap"
 )
 
@@ -48,9 +48,9 @@ func New(ctx context.Context, conf *config.Config) (*Database, error) {
 		err = fmt.Errorf("memcached: %w", err)
 
 		if r := rdb.Close(); r != nil {
-			err = fmt.Errorf("%w || closing redis: %s", err, r)
+			err = fmt.Errorf("%w\nclose redis: %s", err, r)
 		}
-		
+
 		return nil, err
 
 	}

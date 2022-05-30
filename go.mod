@@ -1,4 +1,4 @@
-module auth-example
+module go-auth
 
 go 1.18
 

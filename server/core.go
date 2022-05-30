@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	"auth-example/server/handlers/oauth"
-	"auth-example/server/handlers/web"
-	"auth-example/server/repository"
-	"auth-example/utils/config"
 	"github.com/gorilla/mux"
+	"go-auth/server/handlers/oauth"
+	"go-auth/server/handlers/web"
+	"go-auth/server/repository"
+	"go-auth/utils/config"
 )
 
 func New(conf config.Host, model repository.Model) *http.Server {

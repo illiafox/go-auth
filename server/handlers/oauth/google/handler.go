@@ -3,8 +3,8 @@ package google
 import (
 	"net/http"
 
-	"auth-example/server/repository"
-	"auth-example/utils/templates"
+	"go-auth/server/repository"
+	"go-auth/utils/templates"
 	"go.uber.org/zap"
 )
 
@@ -18,7 +18,7 @@ func New(model repository.Model) http.Handler {
 	router := http.NewServeMux()
 
 	google := Methods{
-		log: model.Log,
+		log: model.Log.Named("google"),
 		rep: model.Rep,
 		ts:  model.TS,
 	}

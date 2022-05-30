@@ -3,10 +3,10 @@ package oauth
 import (
 	"fmt"
 
-	"auth-example/oauth/github"
-	"auth-example/oauth/google"
-	"auth-example/oauth/parse"
-	"auth-example/utils/config"
+	"go-auth/oauth/github"
+	"go-auth/oauth/google"
+	"go-auth/oauth/parse"
+	"go-auth/utils/config"
 )
 
 type Oauth struct {

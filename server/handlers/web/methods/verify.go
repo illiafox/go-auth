@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"auth-example/database/model"
+	"go-auth/database/model"
 	"go.uber.org/zap"
 )
 

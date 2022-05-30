@@ -3,9 +3,9 @@ package redis
 import (
 	"fmt"
 
-	"auth-example/database/redis/sessions"
-	"auth-example/utils/config"
 	"github.com/go-redis/redis"
+	"go-auth/database/redis/sessions"
+	"go-auth/utils/config"
 )
 
 type Redis struct {

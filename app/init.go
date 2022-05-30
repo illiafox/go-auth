@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"auth-example/utils/config"
-	zaplog "auth-example/utils/zap"
+	"go-auth/utils/config"
+	zaplog "go-auth/utils/zap"
 	"go.uber.org/zap"
 )
 

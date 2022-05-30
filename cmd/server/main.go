@@ -4,7 +4,7 @@
 
 package main
 
-import "auth-example/app"
+import "go-auth/app"
 
 func main() {
 	app.Start()
