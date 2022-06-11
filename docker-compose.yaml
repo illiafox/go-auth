@@ -5,18 +5,36 @@ services:
   postgres:
     restart: on-failure
     image: 'postgres:latest'
+
     container_name: 'postgres'
-
-    volumes:
-      - "./migrate/*.up.sql:/docker-entrypoint-initdb.d/"
-
     networks:
       - hosts
+    command: -p 5431
+
+    ports:
+      - "5431:5431"
 
     environment:
       POSTGRES_DB: auth_example
       POSTGRES_USER: server
       POSTGRES_PASSWORD: pg_password
+
+  migrate:
+    image: migrate/migrate
+
+    restart: on-failure
+
+    depends_on:
+      - postgres
+
+    volumes:
+      - ./migrate:/database
+
+    networks:
+      - hosts
+
+    command:
+      [ "-database",  "postgres://server:pg_password@postgres:5431/auth_example?sslmode=disable" , "-path", "/database", "up" ]
 
   #
 
@@ -39,7 +57,10 @@ services:
 
     image: "redis:latest"
 
-    command: redis-server --requirepass redis_password
+    command: redis-server --port 6380 --requirepass password
+
+    ports:
+      - "6380:6380"
 
     environment:
       REDIS_REPLICATION_MODE: master
@@ -63,16 +84,20 @@ services:
       - postgres
       - redis
       - memcached
+      - migrate
 
     environment:
       POSTGRES_IP: postgres
+      POSTGRES_PORT: 5431
       POSTGRES_USER: server
-      POSTGRES_PASSWORD: pg_password
+      POSTGRES_PASSWORD: 'pg_password'
 
-      REDIS_ADDRESS: 'redis:6379'
-      REDIS_PASS: 'redis_password'
+      REDIS_ADDRESS: 'redis:6380'
+      REDIS_PASS: 'password'
 
       MEMCACHED_ADDRESS: 'memcached:11211'
+
+      SMTP_PASSWORD: $SMTP_PASSWORD
 
       ARGS: -env -http
 
