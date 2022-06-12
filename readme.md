@@ -51,6 +51,11 @@ Server is ready immediately after containers are up
 SMTP_PASSWORD="mail_password" docker-compose up
 ```
 
+- ### Redis
+    **Port** `:6380` **Password** `password` **Database** `0`
+- ### PostgreSQL
+    **Port** `:5431` **User** `server` **Password** `pg_password` **Database** `auth_example`
+
 It is possible to additionally configure the app using environment variables
 ```yaml
 environment:
