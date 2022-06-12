@@ -1,11 +1,10 @@
 package mail
 
 import (
-	"bytes"
-	"encoding/base64"
 	"fmt"
 
 	"github.com/bradfitz/gomemcache/memcache"
+	"go-auth/database/memcached/mail/base64"
 )
 
 type Mail struct {
@@ -17,8 +16,6 @@ const (
 
 	expire = 60 * 20 // 20 minutes
 )
-
-var separator = []byte(":")
 
 /*
 STORING MODEL
@@ -35,33 +32,24 @@ func New(client *memcache.Client) Mail {
 }
 
 func (m Mail) Store(key, mail string, secret []byte) error {
-	buf := new(bytes.Buffer)
 
-	encoder := base64.NewEncoder(base64.StdEncoding, buf)
-
-	_, err := encoder.Write([]byte(mail))
+	data, err := base64.Encode(mail, secret)
 	if err != nil {
-		return fmt.Errorf("encode mail: %w", err)
+		return fmt.Errorf("base64: encode: %w", err)
 	}
 
-	buf.Write(separator)
-
-	_, err = encoder.Write(secret)
-	if err != nil {
-		return fmt.Errorf("encode secret: %w", err)
-	}
-
-	err = encoder.Close()
-	if err != nil {
-		return fmt.Errorf("close encoder: %w", err)
-	}
-
-	return m.client.Set(&memcache.Item{
+	err = m.client.Set(&memcache.Item{
 		Key:        prefix + key,
-		Value:      buf.Bytes(),
+		Value:      data,
 		Flags:      0,
 		Expiration: expire,
 	})
+
+	if err != nil {
+		return fmt.Errorf("set: %w", err)
+	}
+
+	return nil
 }
 
 func (m Mail) Get(key string) (mail, secret string, err error) {
@@ -85,24 +73,10 @@ func (m Mail) Get(key string) (mail, secret string, err error) {
 		return "", "", err
 	}
 
-	i := bytes.Index(item.Value, separator)
-	if i < 0 {
-		return "", "", fmt.Errorf("wrong separator index %d", i)
-	}
-	//
-	buf := item.Value[:i]
-	_, err = base64.StdEncoding.Decode(buf, buf)
+	mail, secret, err = base64.Decode(item.Value)
 	if err != nil {
-		return "", "", fmt.Errorf("base64: decode first part: %w", err)
+		return "", "", fmt.Errorf("base64: decode: %w", err)
 	}
-	mail = string(buf[:base64.StdEncoding.DecodedLen(len(buf))])
-	//
-	buf = item.Value[i+1:]
-	_, err = base64.StdEncoding.Decode(buf, buf)
-	if err != nil {
-		return "", "", fmt.Errorf("base64: decode second part: %w", err)
-	}
-	secret = string(buf[:base64.StdEncoding.DecodedLen(len(buf))])
-	//
-	return mail, secret, nil
+
+	return
 }
