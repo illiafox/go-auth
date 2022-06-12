@@ -88,7 +88,7 @@ func Start() {
 	if err != nil {
 		logger.Error("Error", zap.Error(err))
 
-		return
+		os.Exit(1)
 	}
 
 	logger.Info("Done", zap.Duration("time", time.Since(t)))
