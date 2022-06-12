@@ -48,7 +48,7 @@
 ## docker-compose
 Server is ready immediately after containers are up
 ```shell
-docker-compose up
+SMTP_PASSWORD="mail_password" docker-compose up
 ```
 
 It is possible to additionally configure the app using environment variables
