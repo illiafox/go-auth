@@ -6,7 +6,6 @@ services:
     restart: on-failure
     image: 'postgres:latest'
 
-    container_name: 'postgres'
     networks:
       - hosts
     command: -p 5431
@@ -43,8 +42,6 @@ services:
 
     image: memcached
 
-    container_name: 'memcached'
-
     networks:
       - hosts
 
@@ -52,8 +49,6 @@ services:
 
   redis:
     restart: on-failure
-
-    container_name: 'redis'
 
     image: "redis:latest"
 
@@ -74,8 +69,6 @@ services:
     restart: on-failure
 
     build: .
-
-    container_name: 'server'
 
     ports:
       - "8080:8080"
